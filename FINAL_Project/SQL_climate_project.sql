@@ -13,13 +13,13 @@ WHERE
     Country <> '' AND
     `Country_[0]` <> '' AND
     Year <> '' AND
-    `Water related Adaptation technologies` <> '' AND
-    `Trade (% of GDP)` <> '' AND
-    `Time required to register property (days)` <> '' AND
-    `GDP per capita, PPP (constant 2011 international $)` <> '' AND
-    `Employers, total (% of total employment) (modeled ILO estimate)` <> '' AND
-    `Gross enrolment ratio, primary, both sexes (%)` <> '' AND
-    `Water Stress Index` <> '';
+    Water_related_Adaptation_technologies <> '' AND
+    Trade_percent_of_GDP <> '' AND
+    Time_required_to_register_property_days <> '' AND
+    GDP_per_capita <> '' AND
+    Employers__tot_percent_total_employment <> '' AND
+    Gross_enrol_ratio_primary_both sexes_percent <> '' AND
+    Water_Stress_Index <> '';
 
 
 
@@ -33,37 +33,37 @@ FROM climate
 ORDER BY Country;
 
 # Selecting country and ordering by water stress index in descending order
-SELECT Country, `Water Stress Index`
+SELECT Country, Water_Stress_Index
 FROM climate
-ORDER BY `Water Stress Index` DESC;
+ORDER BY Water_Stress_Index DESC;
 
 
 
 #Country, Year, Water index stress
-SELECT Country, Year, `Water Stress Index`, `GDP per capita, PPP (constant 2011 international $)`
+SELECT Country, Year, Water_Stress_Index, GDP_per_capita
 FROM climate
-WHERE (Country, `GDP per capita, PPP (constant 2011 international $)`) IN (
-    SELECT Country, MIN(`GDP per capita, PPP (constant 2011 international $)`)
+WHERE (Country, GDP_per_capita) IN (
+    SELECT Country, MIN(GDP_per_capita)
     FROM climate
     GROUP BY Country
 )
-ORDER BY `GDP per capita, PPP (constant 2011 international $)`
+ORDER BY GDP_per_capita
 LIMIT 10;
 
 #Filtering stress index 0.5 and 0.6
 
-SELECT Country, Year, `Water Stress Index`
+SELECT Country, Year, Water_Stress_Index
 FROM climate
-WHERE `Water Stress Index` Between 0.5 AND 0.6;
+WHERE Water_Stress_Index Between 0.5 AND 0.6;
 
 #Filtering country
 
-SELECT Country, Year, `Water Stress Index`
+SELECT Country, Year, Water_Stress_Index
 FROM climate
-WHERE `Water Stress Index` > 0.5 AND (Country LIKE 'E%' OR Country LIKE 'S%');
+WHERE Water_Stress_Index > 0.5 AND (Country LIKE 'E%' OR Country LIKE 'S%');
 
 # Finding Avg of patent
-SELECT Country, AVG(`Water related Adaptation technologies`) AS avg_water_tech
+SELECT Country, AVG(Water_related_Adaptation_technologies) AS avg_water_tech
 FROM climate
 GROUP BY COUNTRY 
 ORDER BY avg_water_tech DESC
@@ -73,6 +73,6 @@ LIMIT 10;
 SELECT Country
 FROM climate
 GROUP BY country
-HAVING AVG(`Water related Adaptation technologies`) > 1; #will only work if used groupby
+HAVING AVG(Water_related_Adaptation_technologies) > 1; #will only work if used groupby
 
 
